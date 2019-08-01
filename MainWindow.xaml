@@ -1,0 +1,142 @@
+﻿<Window x:Class="Wpf_Rent_A_Car.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wpf_Rent_A_Car"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing"
+        mc:Ignorable="d"
+        Title="Rent A Car" Height="760" Width="800" ResizeMode="CanMinimize">
+
+    <Grid Background="LightYellow" Margin="0,0,3.6,-0.6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="53*"/>
+            <RowDefinition Height="718*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="78*"/>
+            <ColumnDefinition Width="317*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap"  Text="RENT A CAR APP" VerticalAlignment="Top" Margin="10,8,0,0" FontSize="28" Height="47" Width="295" Grid.ColumnSpan="2" FontWeight="Bold" Grid.RowSpan="2"/>
+        <TextBox x:Name="Tbx_filter"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" ToolTip="Enter Customer's FirstName/LastName" Text="" VerticalAlignment="Top" Width="137" Margin="10,5.2,0,0" Grid.Row="1" TextChanged="Tbx_filter_TextChanged"/>
+        <ListBox x:Name="Lbx_customers" Height="588" ToolTip="List showing Customer's Names" HorizontalAlignment="Left" Margin="10,38.2,0,0" Grid.Row="1" VerticalAlignment="Top" Width="139" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock>
+                        <Run Text="{Binding customerName}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <StackPanel DataContext="{Binding ElementName=Lbx_customers, Path=SelectedItem}"  Grid.Row="1" Margin="1,5.4,10.4,0.6" Grid.Column="1">
+            <StackPanel Height="93" Margin="10,0,211,0">
+                <TextBlock TextWrapping="Wrap" Margin="10,3,195,10" Height="16" FontWeight="Bold"><Run Text="CUST"/><Run Text="OMER INFORMATION"/></TextBlock>
+                <StackPanel Margin="0,0,0.2,10"  VerticalAlignment="Top" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Text="Customer Name" Width="100" VerticalAlignment="Top" />
+                    <TextBox Height="23" TextWrapping="Wrap" TextChanged="Tbx_TextChanged" Text="{Binding customerName}" Width="190"/>
+                </StackPanel>
+                <StackPanel Margin="0,0,0.2,10"  VerticalAlignment="Top" Orientation="Horizontal">
+                    <TextBlock HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Text="Email" Width="100" VerticalAlignment="Top" />
+                    <TextBox Height="23" TextWrapping="Wrap" TextChanged="Tbx_TextChanged" Text="{Binding emailId}" Width="190"/>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel DataContext="{Binding ElementName=Lbx_customers, Path=SelectedItem}" Height="277" Margin="10,0,0.2,0">
+                <TextBlock TextWrapping="Wrap" Margin="10,5,194,10" Height="16" FontWeight="Bold"><Run Text="HIS"/><Run Text="TORY BOOKINGS"/></TextBlock>
+                <DataGrid x:Name="dataGrid"  ToolTip="History Bookings" VerticalScrollBarVisibility="Visible" Margin="10,0,0.2,0" ColumnWidth="*" EnableRowVirtualization="False" ItemsSource="{Binding SelectedItems, ElementName=Lbx_customers}" Height="55">
+                </DataGrid>
+                <TextBlock TextWrapping="Wrap" Margin="10,5,194,10" Height="16" FontWeight="Bold"><Run Text="BOO"/><Run Text="KED INFORMATION"/></TextBlock>
+                <StackPanel Margin="0,0,9.8,10"  VerticalAlignment="Top" Orientation="Horizontal" Height="31">
+                    <StackPanel Margin="0,5,0,0"  VerticalAlignment="Top" Orientation="Horizontal" Height="22" Width="111">
+                        <TextBlock Name="Tbk_carnumber" HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Width="69" VerticalAlignment="Top" Text="Car Number"></TextBlock>
+                        <TextBox x:Name="Tbx_selectedcar" TextWrapping="Wrap" Width="26" Text="" Height="22" IsEnabled="False" VerticalAlignment="Top" />
+                    </StackPanel>
+                    <StackPanel Margin="15,5,0,-0.6"  VerticalAlignment="Top" Orientation="Horizontal" Height="26" Width="181">
+                        <TextBlock HorizontalAlignment="Left" Margin="5,0,1.4,0" TextWrapping="Wrap" Width="68" VerticalAlignment="Top" Text="Pickup Date"></TextBlock>
+                        <DatePicker x:Name="Dt_selectedpickup"  Margin="0,0,0,0.6" Width="100"/>
+                    </StackPanel>
+                    <StackPanel Margin="5,5,0,0"  VerticalAlignment="Top" Orientation="Horizontal" Height="22" Width="195">
+                        <TextBlock HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Width="75" VerticalAlignment="Top" Text="Dropoff Date"></TextBlock>
+                        <DatePicker x:Name="Dt_selecteddropoff" Margin="0,0,0,0.4" Width="105"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="10,0,194,10"  VerticalAlignment="Top" Orientation="Horizontal">
+                    <Button Content="Update Booking" Margin="0,0,10,0" Width="96" Click="Button_Click_2"/>
+                    <Button x:Name="Btn_cancel" Content="Cancel Booking" Margin="15,0,10,0" Width="92" Click="Button_Click_3"/>
+                </StackPanel>
+                <DataGrid x:Name="dataGrid2"  ToolTip="Booked Information" VerticalScrollBarVisibility="Visible" Height="71" Margin="10,5,0.2,0" SelectionChanged="DataGrid2_SelectionChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="*" Binding="{Binding CarNumber}" Header="Car Number"/>
+                        <DataGridTextColumn Width="*" Binding="{Binding ElementName=Dt_pickup}" Header="Pickup Date"/>
+                        <DataGridTextColumn Width="*" Binding="{Binding ElementName=Dt_dropoff}" Header="Dropoff Date"/>
+                        <DataGridTextColumn Binding="{Binding Location}"  
+                            Width="*" Header="Location" />
+                        <DataGridTextColumn x:Name="Dgrd_status"  
+                            Width="*" Header="Status" Binding="{Binding ElementName=Btn_cancel}" >
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <StackPanel Height="296" Margin="10,0,199.2,0">
+                <TextBlock TextWrapping="Wrap" Text="NEW BOOKING" Margin="10,5,195,0" Height="16" FontWeight="Bold"/>
+                <StackPanel Margin="0,0,-0.2,10"  VerticalAlignment="Top" Orientation="Horizontal" Height="33">
+                    <StackPanel Margin="0,5,0,0"  VerticalAlignment="Top" Orientation="Horizontal" Height="22" Width="189">
+                        <TextBlock HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Width="69" VerticalAlignment="Top" Text="Car Type"/>
+                        <ComboBox x:Name="Cbx_cartype" Width="109" Margin="0,0,1,0">
+                            <ComboBoxItem Content="Hatchback"/>
+                            <ComboBoxItem Content="Sedan"/>
+                            <ComboBoxItem Content="SUV"/>
+                        </ComboBox>
+
+                    </StackPanel>
+                    <StackPanel Margin="15,5,0,0"  VerticalAlignment="Top" Orientation="Horizontal" Height="22" Width="190">
+                        <TextBlock HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Width="75" VerticalAlignment="Top" Text="Location"/>
+                        <ComboBox x:Name="Cbx_location" Width="99" Margin="0,0,0,0.4">
+                            <ComboBoxItem Content="Hauptbahnhof"/>
+                            <ComboBoxItem Content="Wieblingen"/>
+                        </ComboBox>
+
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="0,0,-0.2,10"  VerticalAlignment="Top" Orientation="Horizontal" Height="31">
+                    <StackPanel Margin="0,5,0,0"  VerticalAlignment="Top" Orientation="Horizontal" Height="25" Width="189">
+                        <TextBlock HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Width="69" VerticalAlignment="Top" Text="Pickup Date"/>
+                        <DatePicker x:Name="Dt_pickup" Width="109" Height="22" VerticalAlignment="Top"/>
+
+                    </StackPanel>
+                    <StackPanel Margin="15,5,0,0"  VerticalAlignment="Top" Orientation="Horizontal" Height="25" Width="193">
+                        <TextBlock HorizontalAlignment="Left" Margin="10,0,1.4,0" TextWrapping="Wrap" Width="75" VerticalAlignment="Top" Text="Dropoff Date"/>
+                        <DatePicker x:Name="Dt_dropoff" Margin="0,0,0,0.6" Width="100"/>
+
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Margin="10,0,26.2,10"  VerticalAlignment="Top" Orientation="Horizontal">
+                    <Button Content="Search" Margin="0,0,10,0" Width="70" Click="Button_Click"/>
+                </StackPanel>
+                <StackPanel Margin="10,0,0.2,4.2" Orientation="Vertical" Grid.Row="1" Height="127">
+                    <StackPanel Margin="0,0,-0.8,0" Orientation="Horizontal" Height="21">
+                        <TextBlock Text="Car Number" Width="69" />
+                        <TextBlock Text="Car Name" Width="69"  Margin="45,0,0,0"/>
+                        <TextBlock Text="Rate(€/hour)" Width="69" Margin="60,0,0,0" />
+                    </StackPanel>
+                    <ListBox x:Name="Lbx_cars" VerticalAlignment="Top" ToolTip="List showing available cars" Height="98" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,15.6,0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock><InlineUIContainer>    
+                                        <TextBlock Text="{Binding CarNumber}" TextAlignment="Left" Width="75" Margin="15,0,0,0" /> 
+                                    </InlineUIContainer><Run Text=" "/><InlineUIContainer> 
+                                        <TextBlock Text="{Binding CarName}" Width="85" Margin="20,0,0,0"/> 
+                                    </InlineUIContainer><Run Text=" "/><InlineUIContainer> 
+                                        <TextBlock Text="{Binding Rate}" Width="145" Margin="60,0,0,0"/> 
+                                    </InlineUIContainer></TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <Button x:Name="Btn_confirm" Content="Confirm Booking" Margin="10,-0.5,296.4,0"   Click="Button_Click_1" />
+                <StackPanel Margin="10,12,570,10"  VerticalAlignment="Top" Orientation="Horizontal" Height="48"/>
+            </StackPanel>
+        </StackPanel>
+        <Button x:Name="Btn_create_new_customer" Content="Create Customer" Click="Btn_create_new_customer_Click" HorizontalAlignment="Left"  VerticalAlignment="Top"  Width="137" Margin="10,640.2,0,0" Grid.Row="1" Height="19" />
+    </Grid>
+</Window>
